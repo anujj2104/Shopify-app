@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopWave — Modern eCommerce</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div id="globalLoader" class="loader-overlay">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- NAV -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" onclick="navigate('home')">
+      <span class="logo-icon">⚡</span>
+      <span>ShopWave</span>
+    </a>
+    <div class="nav-search-wrap">
+      <input type="text" class="nav-search" id="navSearch" placeholder="Search products, brands, categories...">
+      <button class="nav-search-btn" onclick="doSearch()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" onclick="navigate('home')">Home</a>
+      <a class="nav-link" onclick="navigate('about')">About</a>
+      <a class="nav-link" onclick="navigate('services')">Services</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" onclick="navigate('wishlist')" title="Wishlist" id="wishlistNavBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="badge" id="wishlistBadge" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" onclick="navigate('cart')" title="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="badge" id="cartBadge">0</span>
+      </button>
+      <div id="authSection">
+        <button class="btn-outline" onclick="navigate('login')">Login</button>
+        <button class="btn-primary" onclick="navigate('register')">Sign Up</button>
+      </div>
+      <div id="userSection" style="display:none">
+        <div class="user-menu" onclick="toggleUserMenu()">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span id="userName">User</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <div class="user-dropdown" id="userDropdown">
+            <a onclick="navigate('profile')">👤 My Profile</a>
+            <a onclick="navigate('orders')">📦 My Orders</a>
+            <a onclick="navigate('wishlist')">❤️ Wishlist</a>
+            <div class="dropdown-divider"></div>
+            <a id="adminPanelLink" onclick="navigate('admin')" style="display:none">⚙️ Admin Panel</a>
+            <a onclick="logoutUser()" class="text-danger">🚪 Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <!-- Mobile Search -->
+  <div class="mobile-search" id="mobileMenu">
+    <div class="nav-search-wrap" style="max-width:100%">
+      <input type="text" class="nav-search" id="mobileSearch" placeholder="Search products...">
+      <button class="nav-search-btn" onclick="doSearch()">🔍</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a onclick="navigate('home');toggleMobileMenu()">Home</a>
+      <a onclick="navigate('about');toggleMobileMenu()">About</a>
+      <a onclick="navigate('services');toggleMobileMenu()">Services</a>
+      <a onclick="navigate('cart');toggleMobileMenu()">Cart</a>
+      <a onclick="navigate('wishlist');toggleMobileMenu()">Wishlist</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGES CONTAINER -->
+<main id="app">
+
+<!-- ========== HOME PAGE ========== -->
+<div id="page-home" class="page">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🛍️ 70+ Premium Products</div>
+      <h1>Shop Everything<br><span class="hero-gradient">You Love</span></h1>
+      <p>Discover the best deals on Electronics, Fashion, Home, Beauty and more. Free delivery on orders above ₹999.</p>
+      <div class="hero-cta">
+        <button class="btn-hero" onclick="scrollToProducts()">Explore Products</button>
+        <button class="btn-hero-outline" onclick="navigate('about')">Learn More</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>70+</strong><span>Products</span></div>
+        <div class="hero-stat"><strong>8</strong><span>Categories</span></div>
+        <div class="hero-stat"><strong>50K+</strong><span>Customers</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hc1"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&q=80" alt=""><span>iPhone 15 Pro</span></div>
+      <div class="hero-card hc2"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80" alt=""><span>Nike Air Max</span></div>
+      <div class="hero-card hc3"><img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&q=80" alt=""><span>L'Oreal Serum</span></div>
+      <div class="hero-badge-float">✅ Free Shipping</div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section" id="categoriesSection">
+    <div class="section-header">
+      <h2 class="section-title">Shop by Category</h2>
+    </div>
+    <div class="categories-scroll">
+      <button class="cat-chip active" onclick="filterCategory('all',this)">All</button>
+      <button class="cat-chip" onclick="filterCategory('Electronics',this)">💻 Electronics</button>
+      <button class="cat-chip" onclick="filterCategory('Fashion',this)">👗 Fashion</button>
+      <button class="cat-chip" onclick="filterCategory('Home',this)">🏠 Home</button>
+      <button class="cat-chip" onclick="filterCategory('Beauty',this)">💄 Beauty</button>
+      <button class="cat-chip" onclick="filterCategory('Sports',this)">⚽ Sports</button>
+      <button class="cat-chip" onclick="filterCategory('Books',this)">📚 Books</button>
+      <button class="cat-chip" onclick="filterCategory('Toys',this)">🎮 Toys</button>
+    </div>
+  </section>
+
+  <!-- Filters + Products -->
+  <section class="section" id="productsSection">
+    <div class="products-toolbar">
+      <div class="products-info">
+        <h2 class="section-title" id="productsTitle">All Products</h2>
+        <span class="products-count" id="productsCount"></span>
+      </div>
+      <div class="sort-filter">
+        <select class="sort-select" onchange="sortProducts(this.value)">
+          <option value="default">Sort: Default</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="popular">Most Popular</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-layout">
+      <!-- Sidebar Filters -->
+      <aside class="products-sidebar">
+        <div class="filter-section">
+          <h4>Price Range</h4>
+          <div class="price-range">
+            <input type="number" id="minPrice" placeholder="Min ₹" oninput="debounceFilter()">
+            <span>—</span>
+            <input type="number" id="maxPrice" placeholder="Max ₹" oninput="debounceFilter()">
+          </div>
+        </div>
+        <div class="filter-section">
+          <h4>Rating</h4>
+          <div class="rating-filters">
+            <label><input type="radio" name="rating" value=""> All</label>
+            <label><input type="radio" name="rating" value="4"> ⭐ 4+ Stars</label>
+            <label><input type="radio" name="rating" value="3"> ⭐ 3+ Stars</label>
+          </div>
+        </div>
+        <button class="btn-outline" style="width:100%;margin-top:12px" onclick="clearFilters()">Clear Filters</button>
+      </aside>
+
+      <!-- Products Grid -->
+      <div class="products-main">
+        <div class="products-grid" id="productsGrid">
+          <!-- Products injected here -->
+        </div>
+        <div id="productsEmpty" class="empty-state" style="display:none">
+          <div class="empty-icon">🔍</div>
+          <h3>No products found</h3>
+          <p>Try adjusting your filters or search</p>
+          <button class="btn-primary" onclick="clearFilters()">Show All</button>
+        </div>
+        <div class="pagination" id="pagination"></div>
+        <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+          <button class="btn-outline" onclick="loadMore()" id="loadMoreBtn">Load More Products</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Banner -->
+  <section class="promo-section">
+    <div class="promo-card">
+      <span class="promo-badge">Limited Time</span>
+      <h3>Up to 40% Off on Electronics</h3>
+      <p>Shop the latest gadgets at unbeatable prices</p>
+      <button class="btn-hero" onclick="filterCategory('Electronics',null)">Shop Now</button>
+    </div>
+    <div class="promo-card promo-card-2">
+      <span class="promo-badge">Free Delivery</span>
+      <h3>Fashion Week Sale</h3>
+      <p>Trending styles from top brands</p>
+      <button class="btn-hero" onclick="filterCategory('Fashion',null)">Explore</button>
+    </div>
+  </section>
+</div>
+
+<!-- ========== LOGIN PAGE ========== -->
+<div id="page-login" class="page" style="display:none">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">⚡ ShopWave</div>
+        <h2>Welcome back</h2>
+        <p>Login to your account to continue</p>
+      </div>
+      <form class="auth-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+            <button type="button" class="toggle-pass" onclick="togglePass('loginPassword')">👁</button>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary btn-block" id="loginBtn">Sign In</button>
+      </form>
+      <div class="auth-footer">
+        <p>Don't have an account? <a onclick="navigate('register')">Create one free</a></p>
+      </div>
+      <div class="auth-demo">
+        <p>🧪 <strong>Demo:</strong> Register a new account to get started</p>
+      </div>
+    </div>
+    <div class="auth-visual">
+      <h2>Discover Amazing Deals Every Day</h2>
+      <p>Join 50,000+ shoppers who trust ShopWave for the best prices and fast delivery.</p>
+      <ul class="auth-benefits">
+        <li>✅ Free delivery on orders above ₹999</li>
+        <li>✅ 30-day easy returns</li>
+        <li>✅ Exclusive member discounts</li>
+        <li>✅ 24/7 customer support</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ========== REGISTER PAGE ========== -->
+<div id="page-register" class="page" style="display:none">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">⚡ ShopWave</div>
+        <h2>Create your account</h2>
+        <p>Join millions of happy shoppers</p>
+      </div>
+      <form class="auth-form" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <input type="password" id="regPassword" placeholder="Minimum 6 characters" required minlength="6">
+            <button type="button" class="toggle-pass" onclick="togglePass('regPassword')">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="regConfirm" placeholder="Repeat your password" required>
+        </div>
+        <button type="submit" class="btn-primary btn-block" id="regBtn">Create Account</button>
+      </form>
+      <div class="auth-footer">
+        <p>Already have an account? <a onclick="navigate('login')">Login here</a></p>
+      </div>
+    </div>
+    <div class="auth-visual">
+      <h2>Everything Delivered to Your Door</h2>
+      <p>Thousands of products, unbeatable prices, lightning-fast delivery across India.</p>
+      <ul class="auth-benefits">
+        <li>🎁 Welcome offer on first order</li>
+        <li>🚀 Same-day delivery in select cities</li>
+        <li>🔒 100% secure payments</li>
+        <li>⭐ 4.9 star customer rating</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CART PAGE ========== -->
+<div id="page-cart" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header">
+      <h1>Shopping Cart</h1>
+      <p id="cartItemCount">0 items</p>
+    </div>
+    <div class="cart-layout" id="cartLayout">
+      <!-- Injected -->
+    </div>
+  </div>
+</div>
+
+<!-- ========== WISHLIST PAGE ========== -->
+<div id="page-wishlist" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header">
+      <h1>❤️ My Wishlist</h1>
+      <p>Products you love</p>
+    </div>
+    <div class="products-grid" id="wishlistGrid"></div>
+    <div id="wishlistEmpty" class="empty-state" style="display:none">
+      <div class="empty-icon">❤️</div>
+      <h3>Your wishlist is empty</h3>
+      <p>Save products you love to buy later</p>
+      <button class="btn-primary" onclick="navigate('home')">Start Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CHECKOUT PAGE ========== -->
+<div id="page-checkout" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header">
+      <h1>🔒 Secure Checkout</h1>
+    </div>
+    <div class="checkout-layout">
+      <div class="checkout-form-section">
+        <h2>Shipping Details</h2>
+        <form id="checkoutForm" class="checkout-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="sh-name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="sh-phone" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Address *</label>
+            <input type="text" id="sh-address" placeholder="House No., Street, Area" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="sh-city" placeholder="Mumbai" required>
+            </div>
+            <div class="form-group">
+              <label>State *</label>
+              <input type="text" id="sh-state" placeholder="Maharashtra" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>PIN Code *</label>
+              <input type="text" id="sh-pincode" placeholder="400001" required>
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <select id="sh-country">
+                <option>India</option><option>USA</option><option>UK</option><option>UAE</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+        <h2 style="margin-top:28px">Payment Method</h2>
+        <div class="payment-method selected">
+          <span>💳</span>
+          <div>
+            <strong>Razorpay</strong>
+            <p>UPI, Cards, NetBanking, Wallets</p>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <div class="checkout-summary-section">
+        <h2>Order Summary</h2>
+        <div id="checkoutItems" class="checkout-items-list"></div>
+        <div class="checkout-totals" id="checkoutTotals"></div>
+        <button class="btn-primary btn-block btn-pay" id="payBtn" onclick="placeOrder()">
+          Place Order & Pay
+        </button>
+        <p class="secure-msg">🔐 256-bit SSL encrypted. Your payment is 100% secure.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ORDER SUCCESS PAGE ========== -->
+<div id="page-order-success" class="page" style="display:none">
+  <div class="page-container">
+    <div class="success-card">
+      <div class="success-animation">🎉</div>
+      <h1>Order Confirmed!</h1>
+      <p>Thank you for your purchase. Your order is being processed.</p>
+      <div class="order-details-box" id="successOrderDetails"></div>
+      <div class="success-actions">
+        <button class="btn-primary" onclick="navigate('home')">Continue Shopping</button>
+        <button class="btn-outline" onclick="navigate('orders')">View Orders</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ORDERS PAGE ========== -->
+<div id="page-orders" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header">
+      <h1>📦 My Orders</h1>
+    </div>
+    <div id="ordersList"></div>
+    <div id="ordersEmpty" class="empty-state" style="display:none">
+      <div class="empty-icon">📦</div>
+      <h3>No orders yet</h3>
+      <p>Your order history will appear here</p>
+      <button class="btn-primary" onclick="navigate('home')">Start Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PROFILE PAGE ========== -->
+<div id="page-profile" class="page" style="display:none">
+  <div class="page-container" style="max-width:600px">
+    <div class="page-header">
+      <h1>👤 My Profile</h1>
+    </div>
+    <div class="profile-card">
+      <div class="profile-avatar" id="profileAvatar">U</div>
+      <form class="auth-form" onsubmit="updateProfile(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="prof-name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Email (read-only)</label>
+          <input type="email" id="prof-email" readonly style="background:#f8f8f8">
+        </div>
+        <h3 style="margin:16px 0 12px">Saved Address</h3>
+        <div class="form-group"><label>Street</label><input type="text" id="prof-street" placeholder="Street address"></div>
+        <div class="form-row">
+          <div class="form-group"><label>City</label><input type="text" id="prof-city" placeholder="City"></div>
+          <div class="form-group"><label>State</label><input type="text" id="prof-state" placeholder="State"></div>
+        </div>
+        <div class="form-group"><label>PIN Code</label><input type="text" id="prof-pin" placeholder="PIN Code"></div>
+        <button type="submit" class="btn-primary btn-block">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ABOUT PAGE ========== -->
+<div id="page-about" class="page" style="display:none">
+  <div class="page-container">
+    <div class="about-hero">
+      <div class="about-text">
+        <span class="section-badge">About Us</span>
+        <h1>Redefining Online<br>Shopping in India</h1>
+        <p>Founded in 2020, ShopWave started with a simple mission: make premium products accessible to everyone. Today we serve over 50,000 customers across India with 70+ carefully curated products.</p>
+        <div class="about-stats">
+          <div class="about-stat"><h3>50K+</h3><p>Happy Customers</p></div>
+          <div class="about-stat"><h3>70+</h3><p>Products</p></div>
+          <div class="about-stat"><h3>8</h3><p>Categories</p></div>
+          <div class="about-stat"><h3>4.9★</h3><p>Rating</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="about-values">
+      <h2 class="section-title text-center">Our Values</h2>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🤝</div><h3>Trust</h3><p>100% genuine products with verified seller network and buyer protection.</p></div>
+        <div class="value-card"><div class="value-icon">🚀</div><h3>Speed</h3><p>Express delivery options including same-day delivery in select cities.</p></div>
+        <div class="value-card"><div class="value-icon">💚</div><h3>Sustainability</h3><p>Eco-friendly packaging and carbon-neutral delivery initiatives.</p></div>
+        <div class="value-card"><div class="value-icon">❤️</div><h3>Customer First</h3><p>24/7 support, easy returns, and a team that genuinely cares.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SERVICES PAGE ========== -->
+<div id="page-services" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header text-center">
+      <span class="section-badge">Our Services</span>
+      <h1>Everything We Offer</h1>
+      <p>Exceptional services designed to make your shopping experience perfect</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-icon">🚀</div><h3>Express Delivery</h3><p>Same-day delivery in Mumbai, Delhi, Bangalore. Next-day across India. Real-time tracking.</p><ul><li>✅ Free on orders above ₹999</li><li>✅ Same-day available</li><li>✅ Real-time GPS tracking</li></ul></div>
+      <div class="service-card"><div class="service-icon">↩️</div><h3>Easy Returns</h3><p>Changed your mind? Return within 30 days, no questions asked. Free pickup from your doorstep.</p><ul><li>✅ 30-day return window</li><li>✅ Free pickup service</li><li>✅ Instant refund</li></ul></div>
+      <div class="service-card"><div class="service-icon">🔒</div><h3>Secure Payments</h3><p>Bank-grade 256-bit encryption on all transactions. Multiple payment options.</p><ul><li>✅ UPI, Cards, Wallets</li><li>✅ EMI options available</li><li>✅ Buyer protection</li></ul></div>
+      <div class="service-card"><div class="service-icon">🎧</div><h3>24/7 Support</h3><p>Our expert team is available round the clock to assist you with any queries.</p><ul><li>✅ Live chat support</li><li>✅ Call & email</li><li>✅ 5-min avg response</li></ul></div>
+      <div class="service-card"><div class="service-icon">🎁</div><h3>Loyalty Rewards</h3><p>Earn ShopCoins on every purchase. Redeem for discounts on future orders.</p><ul><li>✅ 1 coin per ₹10 spent</li><li>✅ Birthday bonuses</li><li>✅ Referral rewards</li></ul></div>
+      <div class="service-card"><div class="service-icon">✅</div><h3>Quality Guarantee</h3><p>Every product undergoes rigorous quality checks before listing. Only genuine products.</p><ul><li>✅ Verified sellers only</li><li>✅ Authenticity certificate</li><li>✅ Quality assurance team</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ADMIN PAGE ========== -->
+<div id="page-admin" class="page" style="display:none">
+  <div class="page-container">
+    <div class="page-header">
+      <h1>⚙️ Admin Panel</h1>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="showAdminTab('products')">Products</button>
+      <button class="admin-tab" onclick="showAdminTab('add')">Add Product</button>
+    </div>
+    <div id="adminProducts" class="admin-section">
+      <div id="adminProductList"></div>
+    </div>
+    <div id="adminAdd" class="admin-section" style="display:none">
+      <form class="auth-form" style="max-width:600px" onsubmit="adminAddProduct(event)">
+        <div class="form-group"><label>Product Name *</label><input type="text" id="adm-name" required></div>
+        <div class="form-group"><label>Description *</label><textarea id="adm-desc" rows="3" required style="resize:vertical"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Price (₹) *</label><input type="number" id="adm-price" required min="0"></div>
+          <div class="form-group"><label>Original Price (₹)</label><input type="number" id="adm-oprice" min="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Category *</label>
+            <select id="adm-cat" required>
+              <option value="">Select...</option>
+              <option>Electronics</option><option>Fashion</option><option>Home</option>
+              <option>Beauty</option><option>Sports</option><option>Books</option><option>Toys</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Brand</label><input type="text" id="adm-brand"></div>
+        </div>
+        <div class="form-group"><label>Image URL *</label><input type="url" id="adm-img" required placeholder="https://..."></div>
+        <div class="form-row">
+          <div class="form-group"><label>Stock</label><input type="number" id="adm-stock" value="50" min="0"></div>
+          <div class="form-group"><label>Rating</label><input type="number" id="adm-rating" value="4.0" min="0" max="5" step="0.1"></div>
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="adm-featured" style="width:auto">
+          <label for="adm-featured" style="margin:0">Mark as Featured</label>
+        </div>
+        <button type="submit" class="btn-primary btn-block">Add Product</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-backdrop" id="productModal" onclick="closeModal(event)">
+  <div class="modal-box" id="productModalBox">
+    <button class="modal-close" onclick="closeProductModal()">✕</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">⚡ ShopWave</div>
+      <p>India's most trusted online shopping destination with 70+ products across 8 categories.</p>
+      <div class="footer-social">📘 🐦 📸 ▶️</div>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li></ul>
+    </div>
+    <div class="footer-links">
+      <h4>Categories</h4>
+      <ul>
+        <li><a onclick="filterCategory('Electronics',null)">Electronics</a></li>
+        <li><a onclick="filterCategory('Fashion',null)">Fashion</a></li>
+        <li><a onclick="filterCategory('Home',null)">Home</a></li>
+        <li><a onclick="filterCategory('Beauty',null)">Beauty</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Customer Care</h4>
+      <ul>
+        <li>📧 support@shopwave.in</li>
+        <li>📞 1800-123-4567</li>
+        <li>⏰ Mon–Sat: 9AM–6PM</li>
+        <li>📍 Mumbai, India</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 ShopWave. All rights reserved. | Made with ❤️ in India</p>
+  </div>
+</footer>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
